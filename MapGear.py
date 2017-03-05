@@ -13,8 +13,6 @@ z=a.as_matrix()
 lons=z[:, [1]]
 lats=z[:, [2]]
 
-
-
 #### Downsize the csv data (by 15 times) to make the animation faster:
 original_size=len(lons)
 resized_size=int(len(lons)/15)
@@ -38,8 +36,6 @@ pop_threshold=2000000*np.sin(angle/3.19)
 
 
 #Choose projection type based on the angle: 1 is narrow, 2 is wide, 3 is world map
-
-
 if angle < 10:  
     projection=1
 elif angle <120:
@@ -47,10 +43,17 @@ elif angle <120:
 else:
     projection=3    
 
+#function to choose the resolution based on the map angle:
+def check_resolution( angle ):
+    if angle < 2.5:  
+        resolution='f'
+    else:
+        resolution='i'
+    return resolution
 
 #Automatically selects the best projection based on the map angle:          
 if projection == 1: ### Best for small paths. 
-    mapa = Basemap(llcrnrlon=mid_lon-1.2*angle,llcrnrlat=mid_lat-1.03*angle,urcrnrlon=mid_lon+1.2*angle,urcrnrlat=mid_lat+1.03*angle,resolution='i', projection='tmerc', lat_0 = mid_lat, lon_0 =mid_lon)
+    mapa = Basemap(llcrnrlon=mid_lon-1.2*angle,llcrnrlat=mid_lat-1.03*angle,urcrnrlon=mid_lon+1.2*angle,urcrnrlat=mid_lat+1.03*angle,resolution=check_resolution(angle), projection='tmerc', lat_0 = mid_lat, lon_0 =mid_lon)
 elif projection == 2: #### medium size paths
     mapa = Basemap(projection='ortho',lon_0=mid_lon,lat_0=mid_lat,resolution='i');
 else: #### very long paths (Whole world!)                
@@ -161,4 +164,4 @@ plt.show()
 #anim.save('Flight_Path.mp4', writer=writer)
 
 #### Save in gif format:
-anim.save('Flight_Path.gif', writer='imagemagick')
+#anim.save('Flight_Path.gif', writer='imagemagick')
