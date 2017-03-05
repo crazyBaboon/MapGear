@@ -1,4 +1,4 @@
-#This script is licensed under the GNU GPLv2+
+#This script is licensed under the GNU GPLv3
 
 from mpl_toolkits.basemap import Basemap
 import matplotlib.animation as animation
