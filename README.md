@@ -1,4 +1,4 @@
-# Mapgear - Map processing tool for FlightGear
+# MapGear - Map processing tool for FlightGear
 
 Run the script MapGear.py in the same folder as the fg_log.csv file. 
 
