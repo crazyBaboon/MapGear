@@ -34,7 +34,8 @@ mid_lat=0.5*(z[1,2]+z[-1,2])
 mid_lon=0.5*(z[1,1]+z[-1,1])
 
 #calculate city population threshold:
-pop_threshold=12116*angle*angle
+pop_threshold=800*angle*angle*angle*angle
+#pop_threshold=12116*angle*angle
 
 
 #Choose projection type based on the angle: 1 is narrow, 2 is wide, 3 is world map
