@@ -162,4 +162,4 @@ plt.show()
 #anim.save('Flight_Path.mp4', writer=writer)
 
 #### Save in gif format:
-#anim.save('Flight_Path.gif', writer='imagemagick', fps=100)
+#anim.save('Flight_Path.gif', writer='imagemagick')
