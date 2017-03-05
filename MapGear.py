@@ -34,8 +34,7 @@ mid_lat=0.5*(z[1,2]+z[-1,2])
 mid_lon=0.5*(z[1,1]+z[-1,1])
 
 #calculate city population threshold:
-pop_threshold=800*angle*angle*angle*angle
-#pop_threshold=12116*angle*angle
+pop_threshold=2000000*np.sin(angle/3.19)
 
 
 #Choose projection type based on the angle: 1 is narrow, 2 is wide, 3 is world map
@@ -51,7 +50,7 @@ else:
 
 #Automatically selects the best projection based on the map angle:          
 if projection == 1: ### Best for small paths. 
-    mapa = Basemap(llcrnrlon=mid_lon-2*angle,llcrnrlat=mid_lat-1.1*angle,urcrnrlon=mid_lon+2*angle,urcrnrlat=mid_lat+1.1*angle,resolution='i', projection='tmerc', lat_0 = mid_lat, lon_0 =mid_lon)
+    mapa = Basemap(llcrnrlon=mid_lon-1.2*angle,llcrnrlat=mid_lat-1.03*angle,urcrnrlon=mid_lon+1.2*angle,urcrnrlat=mid_lat+1.03*angle,resolution='i', projection='tmerc', lat_0 = mid_lat, lon_0 =mid_lon)
 elif projection == 2: #### medium size paths
     mapa = Basemap(projection='ortho',lon_0=mid_lon,lat_0=mid_lat,resolution='i');
 else: #### very long paths (Whole world!)                
@@ -117,7 +116,7 @@ if projection == 0 or projection == 1:
         city_name = item['NAME']
         city_lat = item['LATITUDE']
         city_lon = item['LONGITUDE']
-        if (city_lat>mid_lat-1.1*angle) and (city_lat<mid_lat+1.1*angle) and (city_lon>mid_lon-2*angle)and (city_lon<mid_lon+1.6*angle) : 
+        if (city_lat>mid_lat-1.03*angle) and (city_lat<mid_lat+1.02*angle) and (city_lon>mid_lon-1.2*angle)and (city_lon<mid_lon+1*angle) : 
             if population< pop_threshold: 
                 continue # population threshold for projection 1
             pop.append(population)
@@ -162,4 +161,4 @@ plt.show()
 #anim.save('Flight_Path.mp4', writer=writer)
 
 #### Save in gif format:
-#anim.save('Flight_Path.gif', writer='imagemagick')
+anim.save('Flight_Path.gif', writer='imagemagick')
