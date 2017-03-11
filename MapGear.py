@@ -90,7 +90,6 @@ def init():
     return line,
 
 def animate(i):
-    x, y = mapa(lons_resized, lats_resized)
     line.set_data(x[:i], y[:i])
     return line,
 
