@@ -1,4 +1,4 @@
-#This script is distributed under the GNU GPLv3
+#This script is licensed under the GNU GPLv2+
 
 from mpl_toolkits.basemap import Basemap
 import matplotlib.animation as animation
@@ -176,5 +176,5 @@ plt.show()
 #writer = Writer(fps=30, metadata=dict(artist='Me'), bitrate=1800)
 #anim.save('Flight_Path.mp4', writer=writer)
 
-#### Save in gif format:
+#### Save in gif format. Potentialy slow. Only use this if you know what you are doing.
 #anim.save('Flight_Path_sicily.gif', writer='imagemagick')
