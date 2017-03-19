@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 
 #### Import the .csv file
-a=pd.read_csv('fg_log.csv')
+a=pd.read_csv('fg_log-sicily.csv')
 z=a.as_matrix()
 lons=z[:, [1]]
 lats=z[:, [2]]
@@ -55,7 +55,7 @@ def check_resolution( angle ):
 if projection == 1: ### Best for small paths. 
     mapa = Basemap(llcrnrlon=mid_lon-1.2*angle,llcrnrlat=mid_lat-1.03*angle,urcrnrlon=mid_lon+1.2*angle,urcrnrlat=mid_lat+1.03*angle,resolution=check_resolution(angle), projection='tmerc', lat_0 = mid_lat, lon_0 =mid_lon)
 elif projection == 2: #### medium size paths
-    mapa = Basemap(projection='ortho',lon_0=mid_lon,lat_0=mid_lat,resolution='i');
+    mapa = Basemap(projection='ortho',lon_0=mid_lon,lat_0=mid_lat,resolution='l');
 else: #### very long paths (Whole world!)                
     mapa = Basemap(projection='robin', resolution = 'i', area_thresh = 1000.0,lat_0=0, lon_0=0)
 
@@ -72,33 +72,45 @@ fig=plt.figure()
 ax = fig.add_subplot(1,1,1)
 fig.tight_layout()
 fig.patch.set_facecolor('darkGrey')
-
-mapa.drawcoastlines(color='green')
-#mapa.drawcountries()
-mapa.fillcontinents(color='lightGreen',lake_color='lightBlue')
+mapa.drawcoastlines(color='Black')
+mapa.drawcountries()
+mapa.fillcontinents(color='White',lake_color='lightBlue')
 mapa.drawmapboundary(fill_color='lightBlue')
-#mapa.drawmeridians(np.arange(0, 360, 20))
-#mapa.drawparallels(np.arange(-90, 90, 20))
+
+if projection == 2:
+    mapa.drawmeridians(np.arange(0, 360, 30))
+    mapa.drawparallels(np.arange(-90, 90, 30))
 
 #### Now do the animation:
 
 x, y = mapa(lons_resized, lats_resized)
 line = mapa.plot(x[:1], y[:1], linewidth=2, color='r')[0]
 
-def init():
-    line.set_data([], [])
-    return line,
+#Draw starting point of the journey:
+x_start,y_start = mapa(lons_resized[1], lats_resized[1])
+mapa.plot(x_start,y_start,'ro')
 
+#Animation function:
 def animate(i):
     line.set_data(x[:i], y[:i])
     return line,
 
-anim = animation.FuncAnimation(plt.gcf(), animate, init_func=init,
-                               frames=resized_size+int(0.33*resized_size),interval=6000/(resized_size**1.2), blit=True)
+#Animation procedure. Search the web for 'Matplotlib animation examples'
+anim = animation.FuncAnimation(plt.gcf(), animate, frames=resized_size+int(0.33*resized_size),interval=6000/(resized_size**1.2), blit=True)
 
+#Display the total distance:
 plt.annotate('Total distance='+str(round(distance_traveled,1))+'km', xy=(0.32,-0.04), xycoords='axes fraction')
 
+#Draw starting point of the journey:
+x_start,y_start = mapa(lons_resized[1], lats_resized[1])
+mapa.plot(x_start,y_start,'ro')
 
+#Draw the end point of the journey:
+x_start,y_start = mapa(lons_resized[-1], lats_resized[-1])
+mapa.plot(x_start,y_start,'ro')
+
+
+#Comment/Uncomment the following line to get a fancy ocean map:
 #mapa.bluemarble()
 
 ##### Plot cities:
@@ -135,23 +147,22 @@ if projection == 0 or projection == 1:
     for name,xpt,ypt in zip(city_names,x_city,y_city):
         plt.text(xpt+2000,ypt+2000,name,color='k')
 
- 
+
 else:
     #Load city data for world map
-    latitudes_city = [34.03, 40.3, -23.33, 19.26, -12.2, -33.27, -33.55, 30.3, 14.41, 48.51, 55.45, -1.17, 28.36, 13.45, 35.41, -33.51, 47.55]
-    longitudes_city = [-118.15, -71.51, -46.38, -99.8, -77.1, -70.40, 18.25, 31.14, -17.26, 2.21, 37.37, 36.49, 77.13, 100.28, 139.41, 151.12, 106.55]
-    cities=['Los Angleles','New York', 'São Paulo', 'Mexico City', 'Lima', 'Santiago','Cape Town', 'Cairo','Dakar', 'Paris', 'Moscow','Nairobi', 'Delhi', 'Bangkok', 'Tokyo', 'Sydney', 'Ulaanbaatar']
+    latitudes_city = [34.03, 40.3, -23.33, -12.2, -33.27, -33.55, 30.3, 14.41, 48.51, 55.45, -1.17, 28.36, 13.45, 35.41, -33.51, 47.55]
+    longitudes_city = [-118.15, -71.51, -46.38, -77.1, -70.40, 18.25, 31.14, -17.26, 2.21, 37.37, 36.49, 77.13, 100.28, 139.41, 151.12, 106.55]
+    cities=['Los Angleles','New York', 'São Paulo', 'Lima', 'Santiago','Cape Town', 'Cairo','Dakar', 'Paris', 'Moscow','Nairobi', 'Delhi', 'Bangkok', 'Tokyo', 'Sydney', 'Ulaanbaatar']
  
     # compute the native map projection coordinates for cities
     x_city,y_city = mapa(longitudes_city,latitudes_city)
 
-    mapa.plot(x_city,y_city,'ko')
-
-    # plot the names of cities.
-    for name,xpt,ypt in zip(cities,x_city,y_city):
-        plt.text(xpt+50000,ypt+50000,name,color='k')
-
-
+    #Comment the following lines NOT to display the cities:
+#    mapa.plot(x_city,y_city,'ko')
+#
+#    # plot the names of cities.
+#    for name,xpt,ypt in zip(cities,x_city,y_city):
+#        plt.text(xpt+50000,ypt+50000,name,color='k')
 
 
 plt.show()
@@ -163,4 +174,4 @@ plt.show()
 #anim.save('Flight_Path.mp4', writer=writer)
 
 #### Save in gif format:
-#anim.save('Flight_Path.gif', writer='imagemagick')
+#anim.save('Flight_Path_sicily.gif', writer='imagemagick')
