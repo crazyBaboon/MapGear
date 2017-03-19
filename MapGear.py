@@ -1,4 +1,4 @@
-#This script is licensed under the GNU GPLv3
+#This script is distributed under the GNU GPLv3
 
 from mpl_toolkits.basemap import Basemap
 import matplotlib.animation as animation
@@ -15,7 +15,8 @@ lats=z[:, [2]]
 
 #### Downsize the csv data to make the animation faster:
 
-#resize factor is used to reduce the amount of data necessary to create animation:
+#simulation_speed is used to reduce the amount of data necessary to create animation (especially affects GIF anumation).
+#Tweak it until your GIF animation speed is fine. I used a value of 15 in the past.
 simulation_speed=30   #Decrease/Increase the simulation_speed (integer variable) in order to make simulations slower/faster
 original_size=len(lons)
 resized_size=int(len(lons)/simulation_speed)
