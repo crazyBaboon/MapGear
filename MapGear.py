@@ -8,20 +8,23 @@ import pandas as pd
 import numpy as np
 
 #### Import the .csv file
-a=pd.read_csv('fg_log-sicily.csv')
+a=pd.read_csv('fg_log.csv')
 z=a.as_matrix()
 lons=z[:, [1]]
 lats=z[:, [2]]
 
-#### Downsize the csv data (by 15 times) to make the animation faster:
+#### Downsize the csv data to make the animation faster:
+
+#resize factor is used to reduce the amount of data necessary to create animation:
+simulation_speed=30   #Decrease/Increase the simulation_speed (integer variable) in order to make simulations slower/faster
 original_size=len(lons)
-resized_size=int(len(lons)/15)
+resized_size=int(len(lons)/simulation_speed)
 lons_resized=np.zeros(resized_size)
 lats_resized=np.zeros(resized_size)
 dummy=0             
              
-for i in range(original_size-14):
-    if ((i%15)==0):
+for i in range(original_size-simulation_speed-1):
+    if ((i%simulation_speed)==0):
         lons_resized[dummy]=lons[i]
         lats_resized[dummy]=lats[i]
         dummy=dummy+1
@@ -30,10 +33,6 @@ for i in range(original_size-14):
 angle=max( abs(z[1,2]-z[-1,2]), abs(z[1,1]-z[-1,1]) ) #map angle in degrees
 mid_lat=0.5*(z[1,2]+z[-1,2])
 mid_lon=0.5*(z[1,1]+z[-1,1])
-
-#calculate city population threshold:
-pop_threshold=2000000*np.sin(angle/3.19)
-
 
 #Choose projection type based on the angle: 1 is narrow, 2 is wide, 3 is world map
 if angle < 10:  
@@ -51,6 +50,13 @@ def check_resolution( angle ):
         resolution='i'
     return resolution
 
+#Calculate total distance travelled:
+distance_traveled=0
+for n in range(1,original_size):
+    x2 = (lats[n],lons[n])
+    x1 = (lats[n-1],lons[n-1])
+    distance_traveled=distance_traveled+great_circle(x2,x1).km
+
 #Automatically selects the best projection based on the map angle:          
 if projection == 1: ### Best for small paths. 
     mapa = Basemap(llcrnrlon=mid_lon-1.2*angle,llcrnrlat=mid_lat-1.03*angle,urcrnrlon=mid_lon+1.2*angle,urcrnrlat=mid_lat+1.03*angle,resolution=check_resolution(angle), projection='tmerc', lat_0 = mid_lat, lon_0 =mid_lon)
@@ -58,14 +64,6 @@ elif projection == 2: #### medium size paths
     mapa = Basemap(projection='ortho',lon_0=mid_lon,lat_0=mid_lat,resolution='l');
 else: #### very long paths (Whole world!)                
     mapa = Basemap(projection='robin', resolution = 'i', area_thresh = 1000.0,lat_0=0, lon_0=0)
-
-
-#Calculate total distance travelled:
-distance_traveled=0
-for n in range(1,original_size):
-    x2 = (lats[n],lons[n])
-    x1 = (lats[n-1],lons[n-1])
-    distance_traveled=distance_traveled+great_circle(x2,x1).km
 
 
 fig=plt.figure()
@@ -110,11 +108,14 @@ x_start,y_start = mapa(lons_resized[-1], lats_resized[-1])
 mapa.plot(x_start,y_start,'ro')
 
 
-#Comment/Uncomment the following line to get a fancy ocean map:
+#Comment/Uncomment the following line to get fancy ocean map:
 #mapa.bluemarble()
 
 ##### Plot cities:
-    
+
+#calculate city population threshold:
+pop_threshold=2000000*np.sin(angle/3.19)
+
 if projection == 0 or projection == 1:
 
     #Load city data (Data obtained in www.naturalearthdata.com)
@@ -165,12 +166,13 @@ else:
 #        plt.text(xpt+50000,ypt+50000,name,color='k')
 
 
+
+
 plt.show()
 
 #### Create the movie file:
 #Writer = animation.writers['ffmpeg']
 #writer = Writer(fps=30, metadata=dict(artist='Me'), bitrate=1800)
-#
 #anim.save('Flight_Path.mp4', writer=writer)
 
 #### Save in gif format:
