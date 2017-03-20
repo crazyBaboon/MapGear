@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 
 #### Import the .csv file
-a=pd.read_csv('fg_log-Br-Afrika.csv')
+a=pd.read_csv('fg_log-sicily.csv')
 z=a.as_matrix()
 lons=z[:, [1]]
 lats=z[:, [2]]
@@ -16,15 +16,15 @@ lats=z[:, [2]]
 #### Downsize the csv data to make the animation faster:
 
 #simulation_speed is used to reduce the amount of data necessary to create animation (especially affects GIF anumation).
-#Tweak it until your GIF animation speed is fine. I used a value of 15 in the past.
-simulation_speed=30   #Decrease/Increase the simulation_speed (integer variable) in order to make simulations slower/faster
+#Tweak it until your GIF animation speed is fine. I think it needs to be a prime number, but I am too tired to reason upon it.
+simulation_speed=31   #Decrease/Increase the simulation_speed (needs to be a prime number?) in order to make simulations slower/faster
 original_size=len(lons)
 resized_size=int(len(lons)/simulation_speed)
 lons_resized=np.zeros(resized_size)
 lats_resized=np.zeros(resized_size)
 dummy=0             
              
-for i in range(original_size-1):
+for i in range(original_size-simulation_speed-1):
     if ((i%simulation_speed)==0):
         lons_resized[dummy]=lons[i]
         lats_resized[dummy]=lats[i]
