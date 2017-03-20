@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 
 #### Import the .csv file
-a=pd.read_csv('fg_log.csv')
+a=pd.read_csv('fg_log-Br-Afrika.csv')
 z=a.as_matrix()
 lons=z[:, [1]]
 lats=z[:, [2]]
@@ -24,7 +24,7 @@ lons_resized=np.zeros(resized_size)
 lats_resized=np.zeros(resized_size)
 dummy=0             
              
-for i in range(original_size-simulation_speed-1):
+for i in range(original_size-1):
     if ((i%simulation_speed)==0):
         lons_resized[dummy]=lons[i]
         lats_resized[dummy]=lats[i]
@@ -85,10 +85,6 @@ if projection == 2:
 x, y = mapa(lons_resized, lats_resized)
 line = mapa.plot(x[:1], y[:1], linewidth=2, color='r')[0]
 
-#Draw starting point of the journey:
-x_start,y_start = mapa(lons_resized[1], lats_resized[1])
-mapa.plot(x_start,y_start,'ro')
-
 #Animation function:
 def animate(i):
     line.set_data(x[:i], y[:i])
@@ -105,8 +101,8 @@ x_start,y_start = mapa(lons_resized[1], lats_resized[1])
 mapa.plot(x_start,y_start,'ro')
 
 #Draw the end point of the journey:
-x_start,y_start = mapa(lons_resized[-1], lats_resized[-1])
-mapa.plot(x_start,y_start,'ro')
+x_end,y_end = mapa(lons_resized[-1], lats_resized[-1])
+mapa.plot(x_end,y_end,'ro')
 
 
 #Comment/Uncomment the following line to get fancy ocean map:
