@@ -77,8 +77,8 @@ mapa.fillcontinents(color='White',lake_color='lightBlue')
 mapa.drawmapboundary(fill_color='lightBlue')
 
 if projection == 2:
-    mapa.drawmeridians(np.arange(0, 360, 30))
-    mapa.drawparallels(np.arange(-90, 90, 30))
+    mapa.drawmeridians(np.arange(0, 360, 30),linewidth=0.5)
+    mapa.drawparallels(np.arange(-90, 90, 30),linewidth=0.5)
 
 #### Now do the animation:
 
