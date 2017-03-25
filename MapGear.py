@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 
 #### Import the .csv file
-a=pd.read_csv('fg_log-sicily.csv')
+a=pd.read_csv('fg_log.csv')
 z=a.as_matrix()
 lons=z[:, [1]]
 lats=z[:, [2]]
