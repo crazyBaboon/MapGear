@@ -17,7 +17,7 @@ lats=z[:, [2]]
 
 #simulation_speed is used to reduce the amount of data necessary to create animation (especially affects GIF anumation).
 #Tweak it until your GIF animation speed is fine. I think it needs to be a prime number, but I am too tired to reason upon it.
-simulation_speed=31   #Decrease/Increase the simulation_speed (needs to be a prime number?) in order to make simulations slower/faster
+simulation_speed=30   #Decrease/Increase the simulation_speed (needs to be a prime number?) in order to make simulations slower/faster
 original_size=len(lons)
 resized_size=int(len(lons)/simulation_speed)
 lons_resized=np.zeros(resized_size)
@@ -98,11 +98,11 @@ plt.annotate('Total distance='+str(round(distance_traveled,1))+'km', xy=(0.32,-0
 
 #Draw starting point of the journey:
 x_start,y_start = mapa(lons_resized[1], lats_resized[1])
-mapa.plot(x_start,y_start,'ro')
+mapa.scatter(x_start,y_start,50,marker='o',color='r',edgecolors='black',zorder=10)
 
 #Draw the end point of the journey:
 x_end,y_end = mapa(lons_resized[-1], lats_resized[-1])
-mapa.plot(x_end,y_end,'ro')
+mapa.scatter(x_end,y_end,70,marker='o',color='r',edgecolors='black',zorder=10)
 
 
 #Comment/Uncomment the following line to get fancy ocean map:
