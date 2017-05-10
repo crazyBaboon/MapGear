@@ -97,15 +97,25 @@ fig=plt.figure()
 ax = fig.add_subplot(1,1,1)
 fig.tight_layout()
 fig.patch.set_facecolor('darkGrey')
+if projection == 1:  
+    #mapa.shadedrelief(scale=0.5)
+    mapa.fillcontinents(color='Beige',lake_color='lightBlue')
+elif projection == 2: 
+    mapa.shadedrelief(scale=0.5)
+    mapa.fillcontinents(color='Beige',lake_color='lightBlue')
+    mapa.drawmeridians(np.arange(0, 360, 30),linewidth=0.5)
+    mapa.drawparallels(np.arange(-90, 90, 30),linewidth=0.5)
+else:            
+    mapa.shadedrelief(scale=0.5)
+    #mapa.bluemarble()
+
 mapa.drawcoastlines(color='Black')
 mapa.drawcountries()
-mapa.fillcontinents(color='White',lake_color='lightBlue')
+
 mapa.drawmapboundary(fill_color='lightBlue')
 #Comment/Uncomment the following line to get fancy ocean map:
 #mapa.bluemarble()
-if projection == 2:
-    mapa.drawmeridians(np.arange(0, 360, 30),linewidth=0.5)
-    mapa.drawparallels(np.arange(-90, 90, 30),linewidth=0.5)
+
 
 
 
