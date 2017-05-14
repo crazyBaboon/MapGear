@@ -22,7 +22,7 @@ import numpy as np
 
 
 #### Import the .csv file
-a=pd.read_csv('fg_log-sicily.csv')
+a=pd.read_csv('fg_log.csv')
 z=a.as_matrix()
 lons=z[:, [1]]
 lats=z[:, [2]]
@@ -237,4 +237,4 @@ plt.show()
 #anim.save('Flight_Path.mp4', writer=writer)
 
 #### Save in gif format. Potentialy slow. Only use this if you know what you are doing.
-#anim.save('Flight_Path_cairo.gif', writer='imagemagick')
+#anim.save('Flight_Path.gif', writer='imagemagick')
