@@ -30,9 +30,8 @@ lats=z[:, [2]]
 #### Downsize the csv data to make the animation faster:
 
 # 'data_reduction_factor' is used to reduce the amount of data necessary to create animation (especially affects GIF anumation).
-#Tweak 'data_reduction_factor' until your GIF animation speed is fine.
-data_reduction_factor=30   #Decrease/Increase the 'data_reduction_factor' in order to make GIF animations slower/faster
 original_size=len(lons)
+data_reduction_factor=int((original_size)/120) 
 resized_size=int(original_size/data_reduction_factor)
 lons_resized=np.zeros(resized_size)
 lats_resized=np.zeros(resized_size)
@@ -227,14 +226,14 @@ plt.show()
 ########### Create GIF/video files ##################################################################################################
 
 
+#### Uncomment to save an animation in .gif format:
+#anim.save('Flight_Path.gif', writer='imagemagick')
 
 
 
 
-#### Create the movie file:
+#### Create the movie file - Only use this section if you know what you are doing.
 #Writer = animation.writers['ffmpeg']
 #writer = Writer(fps=30, metadata=dict(artist='Me'), bitrate=1800)
 #anim.save('Flight_Path.mp4', writer=writer)
 
-#### Save in gif format. Potentialy slow. Only use this if you know what you are doing.
-#anim.save('Flight_Path.gif', writer='imagemagick')
