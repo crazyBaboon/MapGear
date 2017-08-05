@@ -51,9 +51,9 @@ for n in range(1,original_size):
     distance_traveled=distance_traveled+great_circle(x2,x1).km
 
 #### Calculate stuff like mid value of lat/lon for to set the center of the map
-angle=max( abs(z[1,2]-z[-1,2]), abs(z[1,1]-z[-1,1]) ) #map angle in degrees
-mid_lat=0.5*(z[1,2]+z[-1,2])
-mid_lon=0.5*(z[1,1]+z[-1,1])
+angle=max( np.amax(abs(z[:,2])) - np.amin(abs(z[:,2])), np.amax(abs(z[:,1])) - np.amin(abs(z[:,1]))) #map angle in degrees
+mid_lat=0.5*(np.amax(z[:,2]) + np.amin(z[:,2])) # latitude center of the map.
+mid_lon=0.5*(np.amax(z[:,1]) + np.amin(z[:,1])) # longitude center of the map.
 
 #Choose map projection type based on the angle: 1 is narrow, 2 is wide, 3 is world map
 if angle < 10:  
