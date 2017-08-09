@@ -4,34 +4,47 @@ from mpl_toolkits.basemap import Basemap
 import matplotlib.animation as animation
 from geopy.distance import great_circle
 import matplotlib.pyplot as plt
+from shutil import copyfile
 import pandas as pd
 import numpy as np
 
 
+#Open and update the mapgear_.txt file
+f = open('mapgear.txt', 'r+')
+number_of_paths=int( f.readline() )
+f.close()
 
+#number_of_paths = int(f)
 
-
-
-
+#Create the new numbered filename to save the path: 
+new_file_name = 'fg_log-' + str(number_of_paths + 1) 
+f = open('mapgear.txt', 'w+')
+f.write(str(number_of_paths + 1)); #increment the number of path in the mapgear.txt file
+f.close()
 
 ###Get data from FlightGear Log file and transform it into numpy arrays #################################################################################################
 
 
 
-
-
-
 #### Import the .csv file
-a=pd.read_csv('fg_log.csv')
+a=pd.read_csv('fg_log.csv') #25, sao paulo 20, africa 220, cairo 180
 z=a.as_matrix()
 lons=z[:, [1]]
 lats=z[:, [2]]
 
+#Save the path in a file with a new numbered name:
+copyfile('fg_log.csv', new_file_name + ".csv")
+
 #### Downsize the csv data to make the animation faster:
 
 # 'data_reduction_factor' is used to reduce the amount of data necessary to create animation (especially affects GIF anumation).
+#Tweak 'data_reduction_factor' until your GIF animation speed is fine.
 original_size=len(lons)
-data_reduction_factor=int((original_size)/120) 
+
+data_reduction_factor=int((original_size)/240) #int(0.000002*(original_size)**2)   #Decrease/Increase the 'data_reduction_factor' in order to make GIF animations slower/faster
+#data_reduction_factor=20   #Decrease/Increase the 'data_reduction_factor' in order to make GIF animations slower/faster
+
+
 resized_size=int(original_size/data_reduction_factor)
 lons_resized=np.zeros(resized_size)
 lats_resized=np.zeros(resized_size)
@@ -52,8 +65,8 @@ for n in range(1,original_size):
 
 #### Calculate stuff like mid value of lat/lon for to set the center of the map
 angle=max( np.amax(abs(z[:,2])) - np.amin(abs(z[:,2])), np.amax(abs(z[:,1])) - np.amin(abs(z[:,1]))) #map angle in degrees
-mid_lat=0.5*(np.amax(z[:,2]) + np.amin(z[:,2])) # latitude center of the map.
-mid_lon=0.5*(np.amax(z[:,1]) + np.amin(z[:,1])) # longitude center of the map.
+mid_lat=0.5*(np.amax(z[:,2]) + np.amin(z[:,2]))
+mid_lon=0.5*(np.amax(z[:,1]) + np.amin(z[:,1]))
 
 #Choose map projection type based on the angle: 1 is narrow, 2 is wide, 3 is world map
 if angle < 10:  
@@ -97,11 +110,11 @@ ax = fig.add_subplot(1,1,1)
 fig.tight_layout()
 fig.patch.set_facecolor('darkGrey')
 if projection == 1:  
-    #mapa.shadedrelief(scale=0.5)
-    mapa.fillcontinents(color='Beige',lake_color='lightBlue')
+    mapa.shadedrelief(scale=0.5)
+    mapa.fillcontinents(color='LightGreen',lake_color='lightBlue')
 elif projection == 2: 
     mapa.shadedrelief(scale=0.5)
-    mapa.fillcontinents(color='Beige',lake_color='lightBlue')
+   # mapa.fillcontinents(color='Beige',lake_color='lightBlue')
     mapa.drawmeridians(np.arange(0, 360, 30),linewidth=0.5)
     mapa.drawparallels(np.arange(-90, 90, 30),linewidth=0.5)
 else:            
@@ -226,14 +239,14 @@ plt.show()
 ########### Create GIF/video files ##################################################################################################
 
 
-#### Uncomment to save an animation in .gif format:
-#anim.save('Flight_Path.gif', writer='imagemagick')
 
 
 
 
-#### Create the movie file - Only use this section if you know what you are doing.
+#### Create the movie file:
 #Writer = animation.writers['ffmpeg']
 #writer = Writer(fps=30, metadata=dict(artist='Me'), bitrate=1800)
 #anim.save('Flight_Path.mp4', writer=writer)
 
+#### Save in gif format. Potentialy slow. Only use this if you know what you are doing.
+#anim.save(new_file_name + '.gif', writer='imagemagick', fps=20)
