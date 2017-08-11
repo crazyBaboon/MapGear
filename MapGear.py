@@ -79,7 +79,7 @@ else:
 #function to choose the resolution based on the map angle:
 def check_resolution( angle ):
     if angle < 2.5:  
-        resolution='h'
+        resolution='f'
     else:
         resolution='i'
     return resolution
