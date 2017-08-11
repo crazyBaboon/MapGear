@@ -110,7 +110,7 @@ ax = fig.add_subplot(1,1,1)
 fig.tight_layout()
 fig.patch.set_facecolor('darkGrey')
 if projection == 1:  
-    mapa.fillcontinents(color='LightGreen',lake_color='lightBlue')
+    mapa.fillcontinents(color='White',lake_color='lightBlue')
 elif projection == 2: 
     mapa.shadedrelief(scale=0.5)
    # mapa.fillcontinents(color='Beige',lake_color='lightBlue')
