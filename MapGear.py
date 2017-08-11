@@ -41,7 +41,7 @@ copyfile('fg_log.csv', new_file_name + ".csv")
 #Tweak 'data_reduction_factor' until your GIF animation speed is fine.
 original_size=len(lons)
 
-data_reduction_factor=int((original_size)/240) #int(0.000002*(original_size)**2)   #Decrease/Increase the 'data_reduction_factor' in order to make GIF animations slower/faster
+data_reduction_factor=int((original_size)/60) #int(0.000002*(original_size)**2)   #Decrease/Increase the 'data_reduction_factor' in order to make GIF animations slower/faster
 #data_reduction_factor=20   #Decrease/Increase the 'data_reduction_factor' in order to make GIF animations slower/faster
 
 
@@ -110,7 +110,6 @@ ax = fig.add_subplot(1,1,1)
 fig.tight_layout()
 fig.patch.set_facecolor('darkGrey')
 if projection == 1:  
-    mapa.shadedrelief(scale=0.5)
     mapa.fillcontinents(color='LightGreen',lake_color='lightBlue')
 elif projection == 2: 
     mapa.shadedrelief(scale=0.5)
