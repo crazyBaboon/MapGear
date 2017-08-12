@@ -2,7 +2,9 @@
 
 For screenshots, news and requests, check https://forum.flightgear.org/viewtopic.php?f=6&t=31741
 
-How to use:
+Short youtube tutorial on how to use MapGear.py: https://www.youtube.com/watch?v=0BaVbCtOr3E
+
+How to use MapGear:
 
 1.Extract the contents of MapGear-master.zip into your /home folder.
 
