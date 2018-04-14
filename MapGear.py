@@ -27,10 +27,10 @@ f.close()
 
 
 #### Import the .csv file
-a=pd.read_csv('fg_log.csv') #25, sao paulo 20, africa 220, cairo 180
-z=a.as_matrix()
-lons=z[:, [1]]
-lats=z[:, [2]]
+a = pd.read_csv('fg_log.csv') #25, sao paulo 20, africa 220, cairo 180
+z = a.as_matrix()
+lons = z[:, [1]]
+lats = z[:, [2]]
 
 #Save the path in a file with a new numbered name:
 copyfile('fg_log.csv', new_file_name + ".csv")
@@ -39,49 +39,49 @@ copyfile('fg_log.csv', new_file_name + ".csv")
 
 # 'data_reduction_factor' is used to reduce the amount of data necessary to create animation (especially affects GIF anumation).
 #Tweak 'data_reduction_factor' until your GIF animation speed is fine.
-original_size=len(lons)
+original_size = len(lons)
 
-data_reduction_factor=int((original_size)/60) #int(0.000002*(original_size)**2)   #Decrease/Increase the 'data_reduction_factor' in order to make GIF animations slower/faster
+data_reduction_factor = int((original_size)/60) #int(0.000002*(original_size)**2)   #Decrease/Increase the 'data_reduction_factor' in order to make GIF animations slower/faster
 #data_reduction_factor=20   #Decrease/Increase the 'data_reduction_factor' in order to make GIF animations slower/faster
 
 
-resized_size=int(original_size/data_reduction_factor)
-lons_resized=np.zeros(resized_size)
-lats_resized=np.zeros(resized_size)
-dummy=0             
+resized_size = int(original_size/data_reduction_factor)
+lons_resized = np.zeros(resized_size)
+lats_resized = np.zeros(resized_size)
+dummy = 0             
              
-for i in np.arange(0,original_size-data_reduction_factor+1):
-    if ((i%data_reduction_factor)==0):
-        lons_resized[dummy]=lons[i]
-        lats_resized[dummy]=lats[i]
-        dummy=dummy+1
+for i in np.arange(0,original_size-data_reduction_factor + 1):
+    if ((i%data_reduction_factor) == 0):
+        lons_resized[dummy] = lons[i]
+        lats_resized[dummy] = lats[i]
+        dummy = dummy + 1
 
 #Calculate total distance travelled:
-distance_traveled=0
+distance_traveled = 0
 for n in range(1,original_size):
     x2 = (lats[n],lons[n])
-    x1 = (lats[n-1],lons[n-1])
-    distance_traveled=distance_traveled+great_circle(x2,x1).km
+    x1 = (lats[n - 1],lons[n - 1])
+    distance_traveled = distance_traveled + great_circle(x2,x1).km
 
 #### Calculate stuff like mid value of lat/lon for to set the center of the map
-angle=max( np.amax(abs(z[:,2])) - np.amin(abs(z[:,2])), np.amax(abs(z[:,1])) - np.amin(abs(z[:,1]))) #map angle in degrees
-mid_lat=0.5*(np.amax(z[:,2]) + np.amin(z[:,2]))
-mid_lon=0.5*(np.amax(z[:,1]) + np.amin(z[:,1]))
+angle = max( np.amax(abs(z[:,2])) - np.amin(abs(z[:,2])), np.amax(abs(z[:,1])) - np.amin(abs(z[:,1]))) #map angle in degrees
+mid_lat = 0.5*(np.amax(z[:,2]) + np.amin(z[:,2]))
+mid_lon = 0.5*(np.amax(z[:,1]) + np.amin(z[:,1]))
 
 #Choose map projection type based on the angle: 1 is narrow, 2 is wide, 3 is world map
 if angle < 10:  
-    projection=1
-elif angle <120:
-    projection=2
+    projection = 1
+elif angle < 120:
+    projection = 2
 else:
-    projection=3    
+    projection = 3    
 
 #function to choose the resolution based on the map angle:
 def check_resolution( angle ):
     if angle < 2.5:  
-        resolution='f'
+        resolution = 'f'
     else:
-        resolution='i'
+        resolution = 'i'
     return resolution
 
 #Create basemap object. 
@@ -105,7 +105,7 @@ else: #### very long paths (Whole world!)
 
 
 
-fig=plt.figure()
+fig = plt.figure()
 ax = fig.add_subplot(1,1,1)
 fig.tight_layout()
 fig.patch.set_facecolor('darkGrey')
@@ -175,25 +175,25 @@ mapa.scatter(x_end,y_end,70,marker='o',color='r',edgecolors='black',zorder=10)
 
 
 #calculate city population threshold:
-pop_threshold=2000000*np.sin(angle/3.19)
+pop_threshold = 2000000*np.sin(angle/3.19)
 
 if projection == 0 or projection == 1: #Naturalearth.com is only used for projection 0 and 1.
 
     #Load city data (Free license data originaly obtained in www.naturalearthdata.com)
     shp_info = mapa.readshapefile('ne_10m_populated_places','ne_10m_populated_places')
 
-    pop=[]
+    pop = []
     city_names = []
-    city_lats=[]
-    city_lons=[]
+    city_lats = []
+    city_lons = []
 
     for item in mapa.ne_10m_populated_places_info:
         population = item['POP_MAX']
         city_name = item['NAME']
         city_lat = item['LATITUDE']
         city_lon = item['LONGITUDE']
-        if (city_lat>mid_lat-1.03*angle) and (city_lat<mid_lat+1.02*angle) and (city_lon>mid_lon-1.2*angle)and (city_lon<mid_lon+1*angle) : 
-            if population< pop_threshold:  
+        if (city_lat > mid_lat-1.03*angle) and (city_lat < mid_lat+1.02*angle) and (city_lon > mid_lon-1.2*angle)and (city_lon < mid_lon+1*angle) : 
+            if population < pop_threshold:  
                 # population threshold for projections 0 and 1. Basically this
                 # means that if the city X population is lower than threshold value,
                 # that city X will not be plotted.
@@ -215,7 +215,7 @@ else:
     #Load wikipedia city data for world map (use this only in projection 2)
     latitudes_city = [34.03, 40.3, -23.33, -12.2, -33.27, -33.55, 30.3, 14.41, 48.51, 55.45, -1.17, 28.36, 13.45, 35.41, -33.51, 47.55]
     longitudes_city = [-118.15, -71.51, -46.38, -77.1, -70.40, 18.25, 31.14, -17.26, 2.21, 37.37, 36.49, 77.13, 100.28, 139.41, 151.12, 106.55]
-    cities=['Los Angleles','New York', 'São Paulo', 'Lima', 'Santiago','Cape Town', 'Cairo','Dakar', 'Paris', 'Moscow','Nairobi', 'Delhi', 'Bangkok', 'Tokyo', 'Sydney', 'Ulaanbaatar']
+    cities = ['Los Angleles','New York', 'São Paulo', 'Lima', 'Santiago','Cape Town', 'Cairo','Dakar', 'Paris', 'Moscow','Nairobi', 'Delhi', 'Bangkok', 'Tokyo', 'Sydney', 'Ulaanbaatar']
  
     # compute the native map projection coordinates for cities
     x_city,y_city = mapa(longitudes_city,latitudes_city)
