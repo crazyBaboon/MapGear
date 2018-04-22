@@ -110,20 +110,20 @@ ax = fig.add_subplot(1,1,1)
 fig.tight_layout()
 fig.patch.set_facecolor('darkGrey')
 if projection == 1:  
-    mapa.fillcontinents(color='White',lake_color='lightBlue')
+    mapa.fillcontinents(color = 'White',lake_color = 'lightBlue')
 elif projection == 2: 
-    mapa.shadedrelief(scale=0.5)
+    mapa.shadedrelief(scale = 0.5)
    # mapa.fillcontinents(color='Beige',lake_color='lightBlue')
-    mapa.drawmeridians(np.arange(0, 360, 30),linewidth=0.5)
-    mapa.drawparallels(np.arange(-90, 90, 30),linewidth=0.5)
+    mapa.drawmeridians(np.arange(0, 360, 30),linewidth = 0.5)
+    mapa.drawparallels(np.arange(-90, 90, 30),linewidth = 0.5)
 else:            
-    mapa.shadedrelief(scale=0.5)
+    mapa.shadedrelief(scale = 0.5)
     #mapa.bluemarble()
 
-mapa.drawcoastlines(color='Black')
+mapa.drawcoastlines(color = 'Black')
 mapa.drawcountries()
 
-mapa.drawmapboundary(fill_color='lightBlue')
+mapa.drawmapboundary(fill_color = 'lightBlue')
 #Comment/Uncomment the following line to get fancy ocean map:
 #mapa.bluemarble()
 
@@ -141,7 +141,7 @@ mapa.drawmapboundary(fill_color='lightBlue')
 
 
 x, y = mapa(lons_resized, lats_resized)
-line = mapa.plot(x[:1], y[:1], linewidth=2, color='r')[0]
+line = mapa.plot(x[:1], y[:1], linewidth = 2, color = 'r')[0]
 
 #Animation function:
 def animate(i):
@@ -149,18 +149,18 @@ def animate(i):
     return line,
 
 #Animation procedure. Search the web for 'Matplotlib animation examples'
-anim = animation.FuncAnimation(plt.gcf(), animate, frames=resized_size+int(0.33*resized_size),interval=6000/(resized_size**1.2), blit=True)
+anim = animation.FuncAnimation(plt.gcf(), animate, frames = resized_size+int(0.33*resized_size),interval = 6000/(resized_size**1.2), blit = True)
 
 #Display the total distance:
-plt.annotate('Total distance='+str(round(distance_traveled,1))+'km', xy=(0.32,-0.04), xycoords='axes fraction')
+plt.annotate('Total distance='+str(round(distance_traveled,1))+'km', xy = (0.32,-0.04), xycoords = 'axes fraction')
 
 #Draw starting point of the journey:
 x_start,y_start = mapa(lons_resized[1], lats_resized[1])
-mapa.scatter(x_start,y_start,70,marker='o',color='r',edgecolors='black',zorder=10)
+mapa.scatter(x_start,y_start,70,marker = 'o',color = 'r',edgecolors = 'black',zorder = 10)
 
 #Draw the end point of the journey:
 x_end,y_end = mapa(lons_resized[-1], lats_resized[-1])
-mapa.scatter(x_end,y_end,70,marker='o',color='r',edgecolors='black',zorder=10)
+mapa.scatter(x_end,y_end,70,marker = 'o',color = 'r',edgecolors = 'black',zorder = 10)
 
 
 
@@ -209,7 +209,7 @@ if projection == 0 or projection == 1: #Naturalearth.com is only used for projec
     mapa.plot(x_city,y_city,'ko')
     # plot the names of cities.
     for name,xpt,ypt in zip(city_names,x_city,y_city):
-        plt.text(xpt+2000,ypt+2000,name,color='k')
+        plt.text(xpt+2000,ypt+2000,name,color = 'k')
 
 else:
     #Load wikipedia city data for world map (use this only in projection 2)
@@ -244,8 +244,8 @@ plt.show()
 
 #### Create the movie file:
 #Writer = animation.writers['ffmpeg']
-#writer = Writer(fps=30, metadata=dict(artist='Me'), bitrate=1800)
-#anim.save('Flight_Path.mp4', writer=writer)
+#writer = Writer(fps = 30, metadata = dict(artist = 'Me'), bitrate=1800)
+#anim.save('Flight_Path.mp4', writer = writer)
 
 #### Save in gif format. Potentialy slow. Only use this if you know what you are doing.
-#anim.save(new_file_name + '.gif', writer='imagemagick', fps=20)
+#anim.save(new_file_name + '.gif', writer = 'imagemagick', fps = 20)
